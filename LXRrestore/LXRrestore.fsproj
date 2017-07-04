@@ -29,10 +29,10 @@
     <Reference Include="System.Numerics" />
     <Reference Include="FSharp.Core" />
     <Reference Include="fLXR">
-      <HintPath>..\..\fLXR\bin\Debug\fLXR.dll</HintPath>
+      <HintPath>..\..\bin\Debug\fLXR.dll</HintPath>
     </Reference>
     <Reference Include="sharpPRNG">
-      <HintPath>..\..\fLXR\packages\sharpPRNG.1.0.3\lib\sharpPRNG.dll</HintPath>
+      <HintPath>..\..\packages\sharpPRNG.1.0.3\lib\sharpPRNG.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -45,15 +45,15 @@
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\..\Microsoft SDKs\F#\3.1\Framework\v4.0\Microsoft.FSharp.Targets" />
   <ItemGroup>
-    <None Include="..\..\fLXR\ManagedOpenSsl\ManagedOpenSsl.dll.config">
+    <None Include="..\..\packages\ManagedOpenSsl\ManagedOpenSsl.dll.config">
       <Link>ManagedOpenSsl.dll.config</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="..\..\fLXR\packages\sharpPRNG.1.0.3\lib\libprngCpp.1.0.2.so">
+    <None Include="..\..\packages\sharpPRNG.1.0.3\lib\libprngCpp.1.0.2.so">
       <Link>libprngCpp.1.0.2.so</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="..\..\fLXR\packages\sharpPRNG.1.0.3\lib\sharpPRNG.dll.config">
+    <None Include="..\..\packages\sharpPRNG.1.0.3\lib\sharpPRNG.dll.config">
       <Link>sharpPRNG.dll.config</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

@@ -92,18 +92,3 @@ module Main =
 
         0 // return an integer exit code
 
-
-(*
-#r "bin/Debug/fLXR.dll";;
-#load "Restore.fs";;
-#load "../Parameter.fs";;
-#load "Program.fs";;
-#I "bin/Debug";;
-let args = [| "-o"; "/tmp/new_restore"; "-d"; "/tmp/the_fpdb.xml"; "-d"; "/tmp/the_keydb.xml"; "-pX"; "/tmp/";"-r";"/home/axeld/Documents/some_file.dat" |];;
-LXRcli.Main.main args;;
-
-
-# select all files with "*.d*" (e.g. matches .dxf .doc) but not ending with "~"
-./bin/Debug/LXRrestore.sh -o /tmp/new_restore -pX /tmp -d /tmp/lxr_some_dbkey.xml -d /tmp/lxr_some_dbfp.xml  -s "\\.d" -x "~$"
-
-*)
