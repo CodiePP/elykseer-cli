@@ -1,0 +1,10 @@
+# create assembly signing key
+
+sn -k LXRbackup.snk
+
+
+# example run
+
+./bin/Debug/LXRbackup.exe -c 1 -d 0 -n 16 -pX /tmp -pD /tmp -f ~/Programs/plantuml.jar -d1 ~/Documents
+
+

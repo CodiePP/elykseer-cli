@@ -1,0 +1,12 @@
+# create assembly signing key
+
+sn -k LXRrestore.snk
+
+
+# example run
+
+./bin/Debug/LXRrestore.exe -o /tmp/test102 -pX /tmp \
+  -d /tmp/lxr_host42_user_2017-02-09T21\:33\:49_dbfp.xml \
+  -d /tmp/lxr_host42_user_2017-02-09T21\:33\:49_dbkey.xml \
+  -r "/home/user/Programs/plantuml.jar" -s "\\.png$"
+
