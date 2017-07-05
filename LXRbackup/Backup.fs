@@ -61,13 +61,7 @@ type Backup () =
             c
     
     let trySetRefDb _ =
-        match refDbKey with
-        | Some dbkey ->
-            match refDbFp with
-            | Some dbfp ->
-                SBCLab.LXR.BackupCtrl.setReference (ctrl ()) dbkey dbfp
-            | _ -> ()
-        | _ -> ()
+        SBCLab.LXR.BackupCtrl.setReference (ctrl ()) refDbKey refDbFp
 
     member this.setN (x : string) =
         //Console.WriteLine("setting n = {0}", x)

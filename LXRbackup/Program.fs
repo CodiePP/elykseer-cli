@@ -38,8 +38,7 @@ module Main =
         System.Console.WriteLine("  -d        deduplication [0|1|2] (default = 0)")
         System.Console.WriteLine("  -pX       output path to encrypted chunks")
         System.Console.WriteLine("  -pD       output path to data files (XML)")
-        System.Console.WriteLine("  -refDbFp  reference DbFp (XML)")
-        System.Console.WriteLine("  -refDbKey reference DbKey (XML)")
+        System.Console.WriteLine("  -ref      reference DbFp (XML)")
         System.Console.WriteLine("  -f        (*)backup single file")
         System.Console.WriteLine("  -d1       (*)backup all files in a directory")
         System.Console.WriteLine("  -dr       (*)recursively backup all files in a directory")
@@ -54,7 +53,7 @@ module Main =
             exit(0)
 
         let ps = List.collect (fun (name,req) -> [new Parameter(name,req)]) 
-                    [ ("-n",true); ("-r",false); ("-c",false); ("-d",false); ("-refDbFp",false); ("-refDbKey",false);
+                    [ ("-n",true); ("-r",false); ("-c",false); ("-d",false); ("-ref",false);
                       ("-pD",true); ("-pX",true); ("-f",false); ("-d1",false); ("-dr",false) ]
                  (*: Parameter list*)
         List.map (fun (p : Parameter) -> p.parse argv) ps |> ignore
@@ -75,7 +74,7 @@ module Main =
         let mutable refdbfp : SBCLab.LXR.DbFp option = None
         let mutable refdbkey : SBCLab.LXR.DbKey option = None
 
-        match List.tryFind (fun (p : Parameter) -> p.getName = "-refDbFp") ps with
+        match List.tryFind (fun (p : Parameter) -> p.getName = "-ref") ps with
         | Some p -> try let db = new SBCLab.LXR.DbFp() in
                         //System.Console.WriteLine("reading paths as reference from {0}", p.getValue.Head)
                         use str = File.OpenText(p.getValue.Head)
@@ -83,17 +82,6 @@ module Main =
                         //str.Close()
                         //refdbfp <- Some db
                         backup.setRefDbFp db
-                    with _ -> ()
-        | _ -> ()
-
-        match List.tryFind (fun (p : Parameter) -> p.getName = "-refDbKey") ps with
-        | Some p -> try let db = new SBCLab.LXR.DbKey() in
-                        //System.Console.WriteLine("reading keys as reference from {0}", p.getValue.Head)
-                        use str = File.OpenText(p.getValue.Head)
-                        db.inStream str
-                        //str.Close()
-                        //refdbkey <- Some db
-                        backup.setRefDbKey db
                     with _ -> ()
         | _ -> ()
 
