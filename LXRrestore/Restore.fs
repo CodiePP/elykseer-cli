@@ -77,11 +77,11 @@ type Restore () =
             match dbfp.idb.get fp with
             | None -> System.Console.WriteLine(gored + "no data" + gonormal)
             | Some db ->
-                let chk = SBCLab.LXR.FileCtrl.fileChecksum (pOut + "/" + fp)
+                let chk = SBCLab.LXR.Sha256.hash_file (pOut + "/" + fp) |> SBCLab.LXR.Key256.toHex
                 if chk = SBCLab.LXR.Key256.toHex db.checksum then
                     System.Console.WriteLine(gogreen + "success." + gonormal)
                 else
-                    System.Console.WriteLine(gored + "failure" + gonormal)
+                    System.Console.WriteLine(gored + "failure " + chk + "/=" + (SBCLab.LXR.Key256.toHex db.checksum) + gonormal)
         with
         | e -> System.Console.WriteLine(gored + "failed" + gonormal + " with")
                System.Console.WriteLine("{0}", e.ToString())
