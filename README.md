@@ -4,3 +4,9 @@
 
 command line interface to [LXR](https://github.com/CodiePP/elykseer-base)
 
+
+## key generation
+
+```sn -k LXRrestore/LXRrestore.snk```
+
+```sn -k LXRbackup/LXRbackup.snk```
