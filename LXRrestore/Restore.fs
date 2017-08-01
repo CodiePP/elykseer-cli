@@ -33,15 +33,28 @@ type Restore () =
     let mutable selexpr = []
     let mutable xclexpr = []
 
-    let goblack = "\u001b[30m"
-    let gored = "\u001b[31m"
-    let gogreen = "\u001b[32m"
-    let goyellow = "\u001b[33m"
-    let goblue = "\u001b[34m"
-    let gomagenta = "\u001b[35m"
-    let gocyan = "\u001b[36m"
-    let gowhite = "\u001b[37m"
-    let gonormal = "\u001b[39m"
+#if compile_for_windows
+    let goblack () = Console.ForegroundColor <- ConsoleColor.Black
+    let gored () = Console.ForegroundColor <- ConsoleColor.Red
+    let gogreen () = Console.ForegroundColor <- ConsoleColor.Green
+    let goyellow () = Console.ForegroundColor <- ConsoleColor.Yellow
+    let goblue () = Console.ForegroundColor <- ConsoleColor.Blue
+    let gomagenta () = Console.ForegroundColor <- ConsoleColor.Magenta
+    let gocyan () = Console.ForegroundColor <- ConsoleColor.Cyan
+    let gowhite () = Console.ForegroundColor <- ConsoleColor.White
+    let normal0 = Console.ForegroundColor
+    let gonormal () = Console.ForegroundColor <- normal0
+#else
+    let goblack () = Console.Write("\u001b[30m")
+    let gored () = Console.Write("\u001b[31m")
+    let gogreen () = Console.Write("\u001b[32m")
+    let goyellow () = Console.Write("\u001b[33m")
+    let goblue () = Console.Write("\u001b[34m")
+    let gomagenta () = Console.Write("\u001b[35m")
+    let gocyan () = Console.Write("\u001b[36m")
+    let gowhite () = Console.Write("\u001b[37m")
+    let gonormal () = Console.Write("\u001b[39m")
+#endif
 
     let init () =
         let o = new SBCLab.LXR.Options()
@@ -70,21 +83,29 @@ type Restore () =
             with _ -> ()
         ()
 
-    let dorestore (fp : string) =
-        System.Console.Write("restoring " + gocyan + fp + gonormal + "  ")
+    let dorestore (fp' : string) =
+#if compile_for_windows
+        let fp = fp'.Replace(":", ",drive")
+#else
+        let fp = fp'
+#endif
+        Console.Write("restoring "); gocyan()
+        Console.Write(fp + "  "); gonormal()
         try SBCLab.LXR.RestoreCtrl.restore ctrl pOut fp
             let dbfp = SBCLab.LXR.RestoreCtrl.getDbFp ctrl
             match dbfp.idb.get fp with
-            | None -> System.Console.WriteLine(gored + "no data" + gonormal)
+            | None -> gored(); Console.WriteLine("no data"); gonormal()
             | Some db ->
                 let chk = SBCLab.LXR.Sha256.hash_file (pOut + "/" + fp) |> SBCLab.LXR.Key256.toHex
                 if chk = SBCLab.LXR.Key256.toHex db.checksum then
-                    System.Console.WriteLine(gogreen + "success." + gonormal)
+                    gogreen()
+                    Console.WriteLine("success."); gonormal()
                 else
-                    System.Console.WriteLine(gored + "failure " + chk + "/=" + (SBCLab.LXR.Key256.toHex db.checksum) + gonormal)
+                    gored()
+                    Console.WriteLine("failure " + chk + "/=" + (SBCLab.LXR.Key256.toHex db.checksum)); gonormal()
         with
-        | e -> System.Console.WriteLine(gored + "failed" + gonormal + " with")
-               System.Console.WriteLine("{0}", e.ToString())
+        | e -> gored(); Console.Write("failed"); gonormal()
+               //Console.WriteLine(" with {0}", e.ToString())
                reraise ()
 
     let checkRestore (fp : string) =
@@ -124,9 +145,6 @@ type Restore () =
 
     member this.restore fp =
         dorestore fp
-(*        try SBCLab.LXR.RestoreCtrl.restore ctrl pOut fp with
-        | e -> System.Console.WriteLine(gored + "restore failed with {0}" + gonormal, e.ToString())
-               reraise () *)
 
     member this.restoreSelection () =
         let db = SBCLab.LXR.RestoreCtrl.getDbFp ctrl
@@ -139,8 +157,14 @@ type Restore () =
                  SBCLab.LXR.RestoreCtrl.time_extract ctrl
         let bi = SBCLab.LXR.RestoreCtrl.bytes_in ctrl
         let bo = SBCLab.LXR.RestoreCtrl.bytes_out ctrl
-        System.Console.WriteLine("restored {0:0,0} bytes (read {1:0,0} bytes); took read={2} ms decrypt={3} ms extract={4} ms",
+        Console.WriteLine("restored {0:0,0} bytes (read {1:0,0} bytes); took read={2} ms decrypt={3} ms extract={4} ms",
             bo, bi,
             SBCLab.LXR.RestoreCtrl.time_read ctrl, SBCLab.LXR.RestoreCtrl.time_decrypt ctrl, SBCLab.LXR.RestoreCtrl.time_extract ctrl)
-        System.Console.WriteLine("compression rate: " + gocyan + "{0:0.00}" + gonormal + "  time: " + gocyan + "{1}" + gonormal + " ms  throughput: " + gocyan + "{2:0,0}" + gonormal + " kilobytes per second", (double(bo) / double(bi)), td, (double(bo) * 1000.0 / 1024.0 / double(td)))
+        Console.Write("compression rate: ")
+        gocyan(); Console.Write("{0:0.00}", (double(bo) / double(bi)))
+        gonormal(); Console.Write("  time: ")
+        gocyan(); Console.Write("{0}", td)
+        gonormal(); Console.Write(" ms  throughput: ")
+        gocyan(); Console.Write("{0:0,0}", (double(bo) * 1000.0 / 1024.0 / double(td)))
+        gonormal(); Console.WriteLine(" kilobytes per second")
         ()

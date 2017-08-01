@@ -21,27 +21,64 @@ namespace LXRcli
 
 module Main =
 
+    open System
     open System.Reflection
 
-    let showHelp () =
-        let refl = System.Reflection.Assembly.GetAssembly(typeof<LXRcli.Restore>)
+#if compile_for_windows
+    let goblack () = Console.ForegroundColor <- ConsoleColor.Black
+    let gored () = Console.ForegroundColor <- ConsoleColor.Red
+    let gogreen () = Console.ForegroundColor <- ConsoleColor.Green
+    let goyellow () = Console.ForegroundColor <- ConsoleColor.Yellow
+    let goblue () = Console.ForegroundColor <- ConsoleColor.Blue
+    let gomagenta () = Console.ForegroundColor <- ConsoleColor.Magenta
+    let gocyan () = Console.ForegroundColor <- ConsoleColor.Cyan
+    let gowhite () = Console.ForegroundColor <- ConsoleColor.White
+    let normal0 = Console.ForegroundColor
+    let gonormal () = Console.ForegroundColor <- normal0
+#else
+    let goblack () = Console.Write("\u001b[30m")
+    let gored () = Console.Write("\u001b[31m")
+    let gogreen () = Console.Write("\u001b[32m")
+    let goyellow () = Console.Write("\u001b[33m")
+    let goblue () = Console.Write("\u001b[34m")
+    let gomagenta () = Console.Write("\u001b[35m")
+    let gocyan () = Console.Write("\u001b[36m")
+    let gowhite () = Console.Write("\u001b[37m")
+    let gonormal () = Console.Write("\u001b[39m")
+#endif
+
+    let showHeader () =
+        let refl = Reflection.Assembly.GetAssembly(typeof<LXRcli.Restore>)
         let n = refl.GetName()
         let copyright = refl.GetCustomAttribute<AssemblyCopyrightAttribute>().Copyright
-        System.Console.WriteLine(n.Name + " " + n.Version.ToString())
-        System.Console.WriteLine(copyright)
-        System.Console.WriteLine()
-        System.Console.WriteLine("Parameters: ")
-        System.Console.WriteLine("  -o    output directory (created if non-existing)")
-        System.Console.WriteLine("  -pX   path to encrypted chunks")
-        System.Console.WriteLine("  -d    (*)load XML with filepaths or keys")
-        System.Console.WriteLine("  -r    (*)restore a single file")
-        System.Console.WriteLine("  -s    (*)regular expression to select files to restore")
-        System.Console.WriteLine("  -x    (*)regular expression to exclude files")
-        System.Console.WriteLine("(*)marked parameters may occur several times.")
+        gocyan()
+        Console.WriteLine(n.Name + " " + n.Version.ToString())
+        gonormal()
+        Console.WriteLine(copyright)
+        Console.WriteLine()
+
+    let showHelp () =
+        let showparam (a:string) (b:string) =
+                                gogreen()
+                                Console.Write(a)
+                                gonormal()
+                                Console.WriteLine(b)
+                                ()
+                           
+        Console.WriteLine("Parameters: ")
+        showparam "  -o    " "output directory (created if non-existing)"
+        showparam "  -pX   " "path to encrypted chunks"
+        showparam "  -d    " "(*)load XML with filepaths or keys"
+        showparam "  -r    " "(*)restore a single file"
+        showparam "  -s    " "(*)regular expression to select files to restore"
+        showparam "  -x    " "(*)regular expression to exclude files"
+        Console.WriteLine("(*)marked parameters may occur several times.")
 
 
     [<EntryPoint>]
     let main argv =
+
+        showHeader ()
 
         if Array.length argv = 0 || Array.contains "--help" argv then
             showHelp ()

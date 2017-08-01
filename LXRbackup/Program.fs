@@ -21,28 +21,62 @@ namespace LXRcli
 
 module Main =
 
+    open System
     open System.IO
     open System.Reflection
 
-    let showHelp () =
-        let refl = System.Reflection.Assembly.GetAssembly(typeof<LXRcli.Backup>)
+#if compile_for_windows
+    let goblack () = Console.ForegroundColor <- ConsoleColor.Black
+    let gored () = Console.ForegroundColor <- ConsoleColor.Red
+    let gogreen () = Console.ForegroundColor <- ConsoleColor.Green
+    let goyellow () = Console.ForegroundColor <- ConsoleColor.Yellow
+    let goblue () = Console.ForegroundColor <- ConsoleColor.Blue
+    let gomagenta () = Console.ForegroundColor <- ConsoleColor.Magenta
+    let gocyan () = Console.ForegroundColor <- ConsoleColor.Cyan
+    let gowhite () = Console.ForegroundColor <- ConsoleColor.White
+    let normal0 = Console.ForegroundColor
+    let gonormal () = Console.ForegroundColor <- normal0
+#else
+    let goblack () = Console.Write("\u001b[30m")
+    let gored () = Console.Write("\u001b[31m")
+    let gogreen () = Console.Write("\u001b[32m")
+    let goyellow () = Console.Write("\u001b[33m")
+    let goblue () = Console.Write("\u001b[34m")
+    let gomagenta () = Console.Write("\u001b[35m")
+    let gocyan () = Console.Write("\u001b[36m")
+    let gowhite () = Console.Write("\u001b[37m")
+    let gonormal () = Console.Write("\u001b[39m")
+#endif
+
+    let showHeader () =
+        let refl = Reflection.Assembly.GetAssembly(typeof<LXRcli.Backup>)
         let n = refl.GetName()
         let copyright = refl.GetCustomAttribute<AssemblyCopyrightAttribute>().Copyright
-        System.Console.WriteLine(n.Name + " " + n.Version.ToString())
-        System.Console.WriteLine(copyright)
-        System.Console.WriteLine()
-        System.Console.WriteLine("Parameters: ")
-        System.Console.WriteLine("  -n        number of chunks (à 256 kB) per assembly")
-        //System.Console.WriteLine("  -r       redundant chunks per assembly (default = 0)")
-        System.Console.WriteLine("  -c        compression [0|1] (default = 0)")
-        System.Console.WriteLine("  -d        deduplication [0|1|2] (default = 0)")
-        System.Console.WriteLine("  -pX       output path to encrypted chunks")
-        System.Console.WriteLine("  -pD       output path to data files (XML)")
-        System.Console.WriteLine("  -ref      reference DbFp (XML)")
-        System.Console.WriteLine("  -f        (*)backup single file")
-        System.Console.WriteLine("  -d1       (*)backup all files in a directory")
-        System.Console.WriteLine("  -dr       (*)recursively backup all files in a directory")
-        System.Console.WriteLine("(*)marked parameters may occur several times.")
+        gocyan()
+        Console.WriteLine(n.Name + " " + n.Version.ToString())
+        gonormal()
+        Console.WriteLine(copyright)
+        Console.WriteLine()
+
+    let showHelp () =
+        let showparam (a:string) (b:string) =
+                                gogreen()
+                                Console.Write(a)
+                                gonormal()
+                                Console.WriteLine(b)
+                                ()
+        Console.WriteLine("Parameters: ")
+        showparam "  -n        " "number of chunks (à 256 kB) per assembly"
+        //showparam "  -r       " "redundant chunks per assembly (default = 0)"
+        showparam "  -c        " "compression [0|1] (default = 0)"
+        showparam "  -d        " "deduplication [0|1|2] (default = 0)"
+        showparam "  -pX       " "output path to encrypted chunks"
+        showparam "  -pD       " "output path to data files (XML)"
+        showparam "  -ref      " "reference DbFp (XML)"
+        showparam "  -f        " "(*)backup single file"
+        showparam "  -d1       " "(*)backup all files in a directory"
+        showparam "  -dr       " "(*)recursively backup all files in a directory"
+        Console.WriteLine("(*)marked parameters may occur several times.")
 
 
     [<EntryPoint>]
@@ -79,8 +113,6 @@ module Main =
                         //System.Console.WriteLine("reading paths as reference from {0}", p.getValue.Head)
                         use str = File.OpenText(p.getValue.Head)
                         db.inStream str
-                        //str.Close()
-                        //refdbfp <- Some db
                         backup.setRefDbFp db
                     with _ -> ()
         | _ -> ()
