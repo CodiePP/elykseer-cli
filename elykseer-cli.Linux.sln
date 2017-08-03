@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{f2a71f9b-5d33-465a-a702-920d77279786}") = "LXRbackup", "LXRbackup\LXRbackup.fsproj", "{41AD9002-2E2B-4731-9D85-1442AB2B3B5F}"
+Project("{f2a71f9b-5d33-465a-a702-920d77279786}") = "LXRbackup.Linux", "LXRbackup\LXRbackup.Linux.fsproj", "{41AD9002-2E2B-4731-9D85-1442AB2B3B5F}"
 EndProject
-Project("{f2a71f9b-5d33-465a-a702-920d77279786}") = "LXRrestore", "LXRrestore\LXRrestore.fsproj", "{11E2BE56-0CB5-40F9-AE89-14A69CBCF8A3}"
+Project("{f2a71f9b-5d33-465a-a702-920d77279786}") = "LXRrestore.Linux", "LXRrestore\LXRrestore.Linux.fsproj", "{11E2BE56-0CB5-40F9-AE89-14A69CBCF8A3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
