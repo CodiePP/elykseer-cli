@@ -6,7 +6,7 @@
     <ProjectGuid>{41AD9002-2E2B-4731-9D85-1442AB2B3B5F}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <RootNamespace>LXRbackup</RootNamespace>
-    <AssemblyName>LXRbackup</AssemblyName>
+    <AssemblyName>LXRbackup.Win32</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>LXRbackup.snk</AssemblyOriginatorKeyFile>

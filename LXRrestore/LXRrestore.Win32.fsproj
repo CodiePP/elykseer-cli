@@ -6,7 +6,7 @@
     <ProjectGuid>{11E2BE56-0CB5-40F9-AE89-14A69CBCF8A3}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <RootNamespace>LXRrestore</RootNamespace>
-    <AssemblyName>LXRrestore</AssemblyName>
+    <AssemblyName>LXRrestore.Win32</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>LXRrestore.snk</AssemblyOriginatorKeyFile>
