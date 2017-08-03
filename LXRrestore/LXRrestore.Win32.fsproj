@@ -47,11 +47,11 @@
        <Link>prngCpp.dll</Link>
        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
      </None>
-     <None Include="..\..\sharpPRNG_development\sharpPRNG\sharpPRNG\sharpPRNG.dll.config">
+     <None Include="..\..\sharpPRNG_development\sharpPRNG\sharpPRNG\bin\Debug\sharpPRNG.dll.config">
        <Link>sharpPRNG.dll.config</Link>
        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
      </None>
-     <None Include="..\..\sharpPRNG_development\sharpPRNG\sharpPRNG\sharpPRNG.dll">
+     <None Include="..\..\sharpPRNG_development\sharpPRNG\sharpPRNG\bin\Debug\sharpPRNG.dll">
        <Link>sharpPRNG.dll</Link>
        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
