@@ -39,21 +39,21 @@
     </Compile>
     <Compile Include="Restore.fs" />
     <Compile Include="Program.fs" />
-     <None Include="..\..\openssl-net_development\bin\Debug\ManagedOpenSsl.dll.config">^M
+     <None Include="..\..\openssl-net_development\bin\Debug\ManagedOpenSsl.dll.config">
        <Link>ManagedOpenSsl.dll.config</Link>
        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
      </None>
-     <None Include="..\..\sharpPRNG_development\prngCpp\w32\Debug\prngCpp.dll">^M
-       <Link>prngCpp.dll</Link>^M
+     <None Include="..\..\sharpPRNG_development\prngCpp\w32\Debug\prngCpp.dll">
+       <Link>prngCpp.dll</Link>
        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
      </None>
-     <None Include="..\..\sharpPRNG_development\sharpPRNG\sharpPRNG\sharpPRNG.dll.config">^M
+     <None Include="..\..\sharpPRNG_development\sharpPRNG\sharpPRNG\sharpPRNG.dll.config">
        <Link>sharpPRNG.dll.config</Link>
        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
      </None>
-     <None Include="..\..\sharpPRNG_development\sharpPRNG\sharpPRNG\sharpPRNG.dll">^M
-       <Link>sharpPRNG.dll</Link>^M
-       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>^M
+     <None Include="..\..\sharpPRNG_development\sharpPRNG\sharpPRNG\sharpPRNG.dll">
+       <Link>sharpPRNG.dll</Link>
+       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
