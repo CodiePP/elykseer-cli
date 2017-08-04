@@ -54,6 +54,9 @@ module Main =
         gocyan()
         Console.WriteLine(n.Name + " " + n.Version.ToString())
         gonormal()
+        gored()
+        Console.WriteLine("pre-release version TR1 - do not use for production")
+        gonormal()
         Console.WriteLine(copyright)
         Console.WriteLine()
 
@@ -64,7 +67,7 @@ module Main =
                                 gonormal()
                                 Console.WriteLine(b)
                                 ()
-                           
+
         Console.WriteLine("Parameters: ")
         showparam "  -o    " "output directory (created if non-existing)"
         showparam "  -pX   " "path to encrypted chunks"

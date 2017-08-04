@@ -55,6 +55,9 @@ module Main =
         gocyan()
         Console.WriteLine(n.Name + " " + n.Version.ToString())
         gonormal()
+        gored()
+        Console.WriteLine("pre-release version TR1 - do not use for production")
+        gonormal()
         Console.WriteLine(copyright)
         Console.WriteLine()
 
@@ -81,6 +84,8 @@ module Main =
 
     [<EntryPoint>]
     let main argv =
+
+        showHeader ()
 
         if Array.length argv = 0 || Array.contains "--help" argv then
             showHelp ()
