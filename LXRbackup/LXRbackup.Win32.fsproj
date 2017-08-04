@@ -43,6 +43,14 @@
       <Link>ManagedOpenSsl.dll.config</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="..\..\openssl-net_development\bin\Debug\libeay32.dll">
+      <Link>libeay32.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\openssl-net_development\bin\Debug\ssleay32.dll">
+      <Link>ssleay32.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="..\..\sharpPRNG_development\prngCpp\w32\Debug\prngCpp.dll">
       <Link>prngCpp.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
