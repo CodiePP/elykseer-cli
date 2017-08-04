@@ -31,6 +31,27 @@
     <DefineConstants>compile_for_windows</DefineConstants>
     <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <Externalconsole>true</Externalconsole>
+    <Prefer32Bit>false</Prefer32Bit>
+    <DefineConstants>TRACE;DEBUG;compile_for_windows</DefineConstants>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
+    <EnableUnmanagedDebugging>true</EnableUnmanagedDebugging>
+    <Optimize>false</Optimize>
+    <Tailcalls>true</Tailcalls>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <StartArguments>-n 16 -c 0 -pX C:\SPACE\LXR -pD C:\SPACE\meta -dr C:\SPACE\gui</StartArguments>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <Externalconsole>true</Externalconsole>
+    <DefineConstants>compile_for_windows</DefineConstants>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath32)\..\Microsoft SDKs\F#\4.0\Framework\v4.0\Microsoft.FSharp.Targets" />
   <ItemGroup>
     <Compile Include="AssemblyInfo.fs" />
@@ -41,6 +62,14 @@
     <Compile Include="Program.fs" />
     <None Include="..\..\openssl-net_development\bin\Debug\ManagedOpenSsl.dll.config">
       <Link>ManagedOpenSsl.dll.config</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\openssl-net_development\bin\Debug\libeay32.dll">
+      <Link>libeay32.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\openssl-net_development\bin\Debug\ssleay32.dll">
+      <Link>ssleay32.dll</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="..\..\sharpPRNG_development\prngCpp\w32\Debug\prngCpp.dll">

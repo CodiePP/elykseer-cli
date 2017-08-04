@@ -113,7 +113,7 @@ module Main =
         let mutable refdbfp : SBCLab.LXR.DbFp option = None
         let mutable refdbkey : SBCLab.LXR.DbKey option = None
 
-        match List.tryFind (fun (p : Parameter) -> p.getName = "-ref") ps with
+        match List.tryFind (fun (p : Parameter) -> p.getName = "-ref" && p.isInit) ps with
         | Some p -> try let db = new SBCLab.LXR.DbFp() in
                         //System.Console.WriteLine("reading paths as reference from {0}", p.getValue.Head)
                         use str = File.OpenText(p.getValue.Head)

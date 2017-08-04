@@ -103,8 +103,19 @@ type Backup () =
         if k >= 0 && k <= 2 then
             pDedup <- k
 
-    member this.setChunkPath p = pOut <- p
-    member this.setDataPath p = pDb <- p
+    member this.setChunkPath p =
+        if SBCLab.LXR.FileCtrl.dirExists(p) then
+            pOut <- p
+        else
+            if Directory.CreateDirectory(p).Exists then
+                pOut <- p
+
+    member this.setDataPath p =
+        if SBCLab.LXR.FileCtrl.dirExists(p) then
+            pDb <- p
+        else
+            if Directory.CreateDirectory(p).Exists then
+                pDb <- p
 
     member this.setRefDbKey db =
         refDbKey <- Some db

@@ -31,6 +31,26 @@
     <Prefer32Bit>false</Prefer32Bit>
     <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <Externalconsole>true</Externalconsole>
+    <DefineConstants>TRACE;DEBUG;compile_for_windows</DefineConstants>
+    <Prefer32Bit>false</Prefer32Bit>
+    <Optimize>false</Optimize>
+    <EnableUnmanagedDebugging>true</EnableUnmanagedDebugging>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <Externalconsole>true</Externalconsole>
+    <DefineConstants>compile_for_windows</DefineConstants>
+    <Prefer32Bit>false</Prefer32Bit>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath32)\..\Microsoft SDKs\F#\4.0\Framework\v4.0\Microsoft.FSharp.Targets" />
   <ItemGroup>
     <Compile Include="AssemblyInfo.fs" />
@@ -39,21 +59,29 @@
     </Compile>
     <Compile Include="Restore.fs" />
     <Compile Include="Program.fs" />
-     <None Include="..\..\openssl-net_development\bin\Debug\ManagedOpenSsl.dll.config">
-       <Link>ManagedOpenSsl.dll.config</Link>
-       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-     </None>
-     <None Include="..\..\sharpPRNG_development\prngCpp\w32\Debug\prngCpp.dll">
-       <Link>prngCpp.dll</Link>
-       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-     </None>
-     <None Include="..\..\sharpPRNG_development\sharpPRNG\sharpPRNG\bin\Debug\sharpPRNG.dll.config">
-       <Link>sharpPRNG.dll.config</Link>
-       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-     </None>
-     <None Include="..\..\sharpPRNG_development\sharpPRNG\sharpPRNG\bin\Debug\sharpPRNG.dll">
-       <Link>sharpPRNG.dll</Link>
-       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <None Include="..\..\openssl-net_development\bin\Debug\ManagedOpenSsl.dll.config">
+      <Link>ManagedOpenSsl.dll.config</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\openssl-net_development\bin\Debug\libeay32.dll">
+      <Link>libeay32.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\openssl-net_development\bin\Debug\ssleay32.dll">
+      <Link>ssleay32.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\sharpPRNG_development\prngCpp\w32\Debug\prngCpp.dll">
+      <Link>prngCpp.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\sharpPRNG_development\sharpPRNG\sharpPRNG\bin\Debug\sharpPRNG.dll.config">
+      <Link>sharpPRNG.dll.config</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\sharpPRNG_development\sharpPRNG\sharpPRNG\bin\Debug\sharpPRNG.dll">
+      <Link>sharpPRNG.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
