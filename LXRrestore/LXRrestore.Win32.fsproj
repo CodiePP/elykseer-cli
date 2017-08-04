@@ -6,7 +6,7 @@
     <ProjectGuid>{11E2BE56-0CB5-40F9-AE89-14A69CBCF8A3}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <RootNamespace>LXRrestore</RootNamespace>
-    <AssemblyName>LXRrestore</AssemblyName>
+    <AssemblyName>LXRrestore.Win32</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>LXRrestore.snk</AssemblyOriginatorKeyFile>
@@ -39,17 +39,21 @@
     </Compile>
     <Compile Include="Restore.fs" />
     <Compile Include="Program.fs" />
-    <None Include="..\..\packages\ManagedOpenSsl\ManagedOpenSsl.dll.config">
-      <Link>ManagedOpenSsl.dll.config</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="..\..\packages\sharpPRNG.1.0.3\lib\libprngCpp.1.0.2.so">
-      <Link>libprngCpp.1.0.2.so</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="..\..\packages\sharpPRNG.1.0.3\lib\sharpPRNG.dll.config">
-      <Link>sharpPRNG.dll.config</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+     <None Include="..\..\openssl-net_development\bin\Debug\ManagedOpenSsl.dll.config">
+       <Link>ManagedOpenSsl.dll.config</Link>
+       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+     </None>
+     <None Include="..\..\sharpPRNG_development\prngCpp\w32\Debug\prngCpp.dll">
+       <Link>prngCpp.dll</Link>
+       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+     </None>
+     <None Include="..\..\sharpPRNG_development\sharpPRNG\sharpPRNG\bin\Debug\sharpPRNG.dll.config">
+       <Link>sharpPRNG.dll.config</Link>
+       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+     </None>
+     <None Include="..\..\sharpPRNG_development\sharpPRNG\sharpPRNG\bin\Debug\sharpPRNG.dll">
+       <Link>sharpPRNG.dll</Link>
+       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -60,7 +64,7 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Numerics" />
     <Reference Include="fLXR">
-      <HintPath>..\..\bin\Debug\fLXR.dll</HintPath>
+      <HintPath>..\..\elykseer-base_development\bin\Debug\fLXR.dll</HintPath>
     </Reference>
   </ItemGroup>
 </Project>
