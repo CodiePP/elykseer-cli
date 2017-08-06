@@ -3,9 +3,9 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
-    <ProjectGuid>{41AD9002-2E2B-4731-9D85-1442AB2B3B5F}</ProjectGuid>
+    <ProjectGuid>{11E2BE56-0CB5-40F9-AE89-14A69CBCF8A3}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>LXRbackup</RootNamespace>
+    <RootNamespace>LXRrestore</RootNamespace>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
@@ -13,27 +13,25 @@
     <OutputPath>bin\Debug</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <Externalconsole>true</Externalconsole>
-    <AssemblyName>LXRbackup</AssemblyName>
+    <AssemblyName>LXRrestore</AssemblyName>
     <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>LXRbackup.snk</AssemblyOriginatorKeyFile>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <AssemblyOriginatorKeyFile>LXRrestore.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <OutputPath>bin\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <Externalconsole>true</Externalconsole>
-    <AssemblyName>LXRbackup</AssemblyName>
+    <AssemblyName>LXRrestore</AssemblyName>
     <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>LXRbackup.snk</AssemblyOriginatorKeyFile>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <AssemblyOriginatorKeyFile>LXRrestore.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <OutputPath>bin\Debug</OutputPath>
-    <AssemblyName>LXRbackup.Linux</AssemblyName>
+    <AssemblyName>LXRrestore.Mono</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <OutputPath>bin\Release</OutputPath>
-    <AssemblyName>LXRbackup.Linux</AssemblyName>
+    <AssemblyName>LXRrestore.Mono</AssemblyName>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="mscorlib" />
@@ -41,11 +39,11 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Numerics" />
     <Reference Include="FSharp.Core" />
-    <Reference Include="ManagedOpenSsl">
-      <HintPath>..\..\openssl-net_development\bin\Debug\ManagedOpenSsl.dll</HintPath>
-    </Reference>
     <Reference Include="fLXR">
       <HintPath>..\..\elykseer-base_development\bin\Debug\fLXR.dll</HintPath>
+    </Reference>
+    <Reference Include="ManagedOpenSsl">
+      <HintPath>..\..\openssl-net_development\bin\Debug\ManagedOpenSsl.dll</HintPath>
     </Reference>
     <Reference Include="sharpPRNG">
       <HintPath>..\..\sharpPRNG_development\sharpPRNG\sharpPRNG\bin\Debug\sharpPRNG.dll</HintPath>
@@ -56,7 +54,7 @@
     <Compile Include="..\Parameter.fs">
       <Link>Parameter.fs</Link>
     </Compile>
-    <Compile Include="Backup.fs" />
+    <Compile Include="Restore.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\..\Microsoft SDKs\F#\4.0\Framework\v4.0\Microsoft.FSharp.Targets" />
@@ -65,12 +63,12 @@
       <Link>ManagedOpenSsl.dll.config</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="..\..\sharpPRNG_development\libprngCpp.1.0.4.so">
-      <Link>libprngCpp.1.0.4.so</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Include="..\..\sharpPRNG_development\sharpPRNG\sharpPRNG\bin\Debug\sharpPRNG.dll.config">
       <Link>sharpPRNG.dll.config</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\sharpPRNG_development\libprngCpp.1.0.4.so">
+      <Link>libprngCpp.1.0.4.so</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
