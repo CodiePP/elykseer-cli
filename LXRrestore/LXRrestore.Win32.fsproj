@@ -57,6 +57,9 @@
     <Compile Include="..\Parameter.fs">
       <Link>Parameter.fs</Link>
     </Compile>
+    <Compile Include="..\Coloring.fs">
+      <Link>Coloring.fs</Link>
+    </Compile>
     <Compile Include="Restore.fs" />
     <Compile Include="Program.fs" />
     <None Include="..\..\openssl-net_development\bin\Debug\ManagedOpenSsl.dll.config">

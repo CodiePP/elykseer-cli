@@ -85,18 +85,18 @@ type Restore () =
 
     let dorestore (fp' : string) =
 #if compile_for_windows
-        let fp = fp'.Replace(":", ",drive")
+        let fpout = fp'.Replace(":", ",drive")
 #else
-        let fp = fp'
+        let fpout = fp'
 #endif
         Console.Write("restoring "); gocyan()
-        Console.Write(fp + "  "); gonormal()
-        try SBCLab.LXR.RestoreCtrl.restore ctrl pOut fp
+        Console.Write(fp' + "  "); gonormal()
+        try SBCLab.LXR.RestoreCtrl.restore ctrl pOut fp'
             let dbfp = SBCLab.LXR.RestoreCtrl.getDbFp ctrl
-            match dbfp.idb.get fp with
+            match dbfp.idb.get fp' with
             | None -> gored(); Console.WriteLine("no data"); gonormal()
             | Some db ->
-                let chk = SBCLab.LXR.Sha256.hash_file (pOut + "/" + fp) |> SBCLab.LXR.Key256.toHex
+                let chk = SBCLab.LXR.Sha256.hash_file (pOut + "/" + fpout) |> SBCLab.LXR.Key256.toHex
                 if chk = SBCLab.LXR.Key256.toHex db.checksum then
                     gogreen()
                     Console.WriteLine("success."); gonormal()

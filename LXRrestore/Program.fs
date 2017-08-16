@@ -24,40 +24,17 @@ module Main =
     open System
     open System.Reflection
 
-#if compile_for_windows
-    let goblack () = Console.ForegroundColor <- ConsoleColor.Black
-    let gored () = Console.ForegroundColor <- ConsoleColor.Red
-    let gogreen () = Console.ForegroundColor <- ConsoleColor.Green
-    let goyellow () = Console.ForegroundColor <- ConsoleColor.Yellow
-    let goblue () = Console.ForegroundColor <- ConsoleColor.Blue
-    let gomagenta () = Console.ForegroundColor <- ConsoleColor.Magenta
-    let gocyan () = Console.ForegroundColor <- ConsoleColor.Cyan
-    let gowhite () = Console.ForegroundColor <- ConsoleColor.White
-    let normal0 = Console.ForegroundColor
-    let gonormal () = Console.ForegroundColor <- normal0
-#else
-    let goblack () = Console.Write("\u001b[30m")
-    let gored () = Console.Write("\u001b[31m")
-    let gogreen () = Console.Write("\u001b[32m")
-    let goyellow () = Console.Write("\u001b[33m")
-    let goblue () = Console.Write("\u001b[34m")
-    let gomagenta () = Console.Write("\u001b[35m")
-    let gocyan () = Console.Write("\u001b[36m")
-    let gowhite () = Console.Write("\u001b[37m")
-    let gonormal () = Console.Write("\u001b[39m")
-#endif
+    open LXRcli.Coloring
 
     let showHeader () =
         let refl = Reflection.Assembly.GetAssembly(typeof<LXRcli.Restore>)
         let n = refl.GetName()
-        let copyright = refl.GetCustomAttribute<AssemblyCopyrightAttribute>().Copyright
         gocyan()
         Console.WriteLine(n.Name + " " + n.Version.ToString())
         gonormal()
         gored()
-        Console.WriteLine("pre-release version TR1 - do not use for production")
+        Console.WriteLine(SBCLab.LXR.Liz.version)
         gonormal()
-        Console.WriteLine(copyright)
         Console.WriteLine()
 
     let showHelp () =
@@ -76,6 +53,11 @@ module Main =
         showparam "  -s    " "(*)regular expression to select files to restore"
         showparam "  -x    " "(*)regular expression to exclude files"
         Console.WriteLine("(*)marked parameters may occur several times.")
+        Console.WriteLine("")
+        showparam "--help      " "shows this help"
+        showparam "--license   " "displays license text"
+        showparam "--copyright " "displays copyright information"
+        Console.WriteLine("")
 
 
     [<EntryPoint>]
@@ -83,8 +65,18 @@ module Main =
 
         showHeader ()
 
-        if Array.length argv = 0 || Array.contains "--help" argv then
+        if Array.length argv = 0
+         || Array.contains "-h" argv 
+         || Array.contains "--help" argv then
             showHelp ()
+            exit(0)
+
+        if Array.contains "--license" argv then
+            Console.WriteLine(SBCLab.LXR.Liz.license)
+            exit(0)
+
+        if Array.contains "--copyright" argv then
+            Console.WriteLine(SBCLab.LXR.Liz.copyright)
             exit(0)
 
         let ps = List.collect (fun (name,req) -> [new Parameter(name,req)]) 
