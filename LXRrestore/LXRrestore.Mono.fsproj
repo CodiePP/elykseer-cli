@@ -67,7 +67,7 @@
       <Link>sharpPRNG.dll.config</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="..\..\sharpPRNG_development\libprngCpp.1.0.4.so">
+    <None Include="..\..\sharpPRNG_development\libprngCpp.linux.1.0.4.so">
       <Link>libprngCpp.1.0.4.so</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
