@@ -51,6 +51,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.fs" />
+    <Compile Include="..\Coloring.fs">
+      <Link>Coloring.fs</Link>
+    </Compile>
     <Compile Include="..\Parameter.fs">
       <Link>Parameter.fs</Link>
     </Compile>
