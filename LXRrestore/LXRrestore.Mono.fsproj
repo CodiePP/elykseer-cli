@@ -68,7 +68,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="..\..\sharpPRNG_development\libprngCpp.linux.1.0.4.so">
-      <Link>libprngCpp.1.0.4.so</Link>
+      <Link>libprngCpp.linux.1.0.4.so</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
