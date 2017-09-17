@@ -61,6 +61,7 @@ module Main =
         showparam "--help      " "shows this help"
         showparam "--license   " "displays license text"
         showparam "--copyright " "displays copyright information"
+        gonormal()
         Console.WriteLine("")
 
 
