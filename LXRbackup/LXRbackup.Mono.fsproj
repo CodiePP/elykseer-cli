@@ -42,8 +42,11 @@
     <Reference Include="ManagedOpenSsl">
       <HintPath>..\..\openssl-net_development\bin\Debug\ManagedOpenSsl.dll</HintPath>
     </Reference>
-    <Reference Include="fLXR">
-      <HintPath>..\..\elykseer-base_development\bin\Debug\fLXR.dll</HintPath>
+    <Reference Include="eLyKseeR">
+      <HintPath>..\..\elykseer-base_development\bin\Debug\eLyKseeR.dll</HintPath>
+    </Reference>
+    <Reference Include="eLyKseeR-native">
+      <HintPath>..\..\elykseer-base_development\bin\Debug\eLyKseeR-native.Mono.dll</HintPath>
     </Reference>
     <Reference Include="sharpPRNG">
       <HintPath>..\..\sharpPRNG_development\sharpPRNG\sharpPRNG\bin\Debug\sharpPRNG.dll</HintPath>
@@ -62,6 +65,10 @@
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\..\Microsoft SDKs\F#\4.0\Framework\v4.0\Microsoft.FSharp.Targets" />
   <ItemGroup>
+    <None Include="..\..\elykseer-base_development\bin\Debug\eLyKseeR-native.dll.config">
+      <Link>eLyKseeR-native.dll.config</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="..\..\openssl-net_development\bin\Debug\ManagedOpenSsl.dll.config">
       <Link>ManagedOpenSsl.dll.config</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
