@@ -33,7 +33,7 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\Debug</OutputPath>
+    <OutputPath>..\bin\Debug\</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <Externalconsole>true</Externalconsole>
     <DefineConstants>TRACE;DEBUG;compile_for_windows</DefineConstants>
@@ -42,6 +42,7 @@
     <EnableUnmanagedDebugging>true</EnableUnmanagedDebugging>
     <UseVSHostingProcess>true</UseVSHostingProcess>
     <PlatformTarget>AnyCPU</PlatformTarget>
+    <Tailcalls>true</Tailcalls>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <OutputPath>bin\Release</OutputPath>
@@ -88,14 +89,17 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="eLyKseeR">
+      <HintPath>..\..\elykseer-base_development\bin\Debug\eLyKseeR.dll</HintPath>
+    </Reference>
+    <Reference Include="eLyKseeR_native">
+      <HintPath>..\..\elykseer-base_development\bin\Debug\eLyKseeR_native.dll</HintPath>
+    </Reference>
     <Reference Include="FSharp.Core, Version=4.4.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
     <Reference Include="Mono.Posix, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756" />
     <Reference Include="mscorlib" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Numerics" />
-    <Reference Include="fLXR">
-      <HintPath>..\..\elykseer-base_development\bin\Debug\fLXR.dll</HintPath>
-    </Reference>
   </ItemGroup>
 </Project>
