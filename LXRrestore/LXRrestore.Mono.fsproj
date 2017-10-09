@@ -42,15 +42,16 @@
     <Reference Include="eLyKseeR">
       <HintPath>..\..\elykseer-base_development\bin\Debug\eLyKseeR.dll</HintPath>
     </Reference>
-    <Reference Include="eLyKseeR-native">
-      <HintPath>..\..\elykseer-base_development\bin\Debug\eLyKseeR-native.Mono.dll</HintPath>
-    </Reference>
     <Reference Include="ManagedOpenSsl">
       <HintPath>..\..\openssl-net_development\bin\Debug\ManagedOpenSsl.dll</HintPath>
     </Reference>
     <Reference Include="sharpPRNG">
       <HintPath>..\..\sharpPRNG_development\sharpPRNG\sharpPRNG\bin\Debug\sharpPRNG.dll</HintPath>
     </Reference>
+    <Reference Include="eLyKseeR-native.Mono">
+      <HintPath>..\..\elykseer-base_development\bin\Debug\eLyKseeR-native.Mono.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.fs" />
