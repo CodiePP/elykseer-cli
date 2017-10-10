@@ -55,6 +55,7 @@ module Main =
         Console.WriteLine("(*)marked parameters may occur several times.")
         Console.WriteLine("")
         showparam "--help      " "shows this help"
+        showparam "--version   " "displays version information"
         showparam "--license   " "displays license text"
         showparam "--copyright " "displays copyright information"
         gonormal()
@@ -70,6 +71,10 @@ module Main =
          || Array.contains "-h" argv 
          || Array.contains "--help" argv then
             showHelp ()
+            exit(0)
+
+        if Array.contains "--version" argv then
+            Console.WriteLine(SBCLab.LXR.Liz.version)
             exit(0)
 
         if Array.contains "--license" argv then

@@ -21,6 +21,7 @@ namespace LXRcli
 
 open System
 open System.IO
+open System.Text.RegularExpressions
 
 open LXRcli.Coloring
 
@@ -30,30 +31,69 @@ type Backup () =
     let mutable r = 0
     let mutable pOut = "/tmp/"
     let mutable pDb = "/tmp/"
-    let mutable backup = None
+    //let mutable backup = None
     let mutable pCompress = false
     let mutable pDedup = 0
     let mutable refDbFp = None
     let mutable refDbKey = None
+    let mutable paths : string list = []
 
-    let ctrl () =
-        match backup with
-        | Some c -> c
-        | None -> 
-            let o = new SBCLab.LXR.Options()
-            o.setNchunks n
-            o.setRedundancy r
-            o.setFpathDb pDb
-            o.setFpathChunks pOut
-            o.setCompression pCompress
-            o.setDeduplication pDedup
-            //Console.WriteLine ("initializing BackupCtrl...")
-            let c = SBCLab.LXR.BackupCtrl.create o
-            backup <- Some c
-            c
+//    let ctrl () =
+//        match backup with
+//        | Some c -> c
+//        | None -> 
+//            let o = new SBCLab.LXR.Options()
+//            o.setNchunks n
+//            o.setRedundancy r
+//            o.setFpathDb pDb
+//            o.setFpathChunks pOut
+//            o.setCompression pCompress
+//            o.setDeduplication pDedup
+//            //Console.WriteLine ("initializing BackupCtrl...")
+//            let c = SBCLab.LXR.BackupCtrl.create o
+//            backup <- Some c
+//            c
     
-    let trySetRefDb _ =
-        SBCLab.LXR.BackupCtrl.setReference (ctrl ()) refDbKey refDbFp
+//    let trySetRefDb ctrl =
+//        SBCLab.LXR.BackupCtrl.setReference ctrl refDbKey refDbFp
+
+    member this.mkJob =
+        let o = new SBCLab.LXR.Options()
+        o.setNchunks n
+        o.setRedundancy r
+        o.setFpathDb pDb
+        o.setFpathChunks pOut
+        o.setCompression pCompress
+        o.setDeduplication pDedup
+       
+        let job : SBCLab.LXR.DbJobDat = {
+            options = o;
+            regexincl = [new Regex(@"..*", RegexOptions.CultureInvariant)];
+            regexexcl = [];
+            paths = paths }
+        job
+
+    member this.runJob (name : string) (job : SBCLab.LXR.DbJobDat) =
+        if not (SBCLab.LXR.FileCtrl.dirExists job.options.fpath_chunks) then
+            Directory.CreateDirectory(job.options.fpath_chunks) |> ignore
+        if not (SBCLab.LXR.FileCtrl.dirExists job.options.fpath_db) then
+            Directory.CreateDirectory(job.options.fpath_db) |> ignore
+        let ctrl = SBCLab.LXR.BackupCtrl.create job.options
+        SBCLab.LXR.BackupCtrl.setReference ctrl refDbKey refDbFp
+        gonormal()
+        Console.Write("running job ")
+        gocyan()
+        Console.WriteLine(name)
+        gonormal()
+
+        Seq.iter (fun p -> SBCLab.LXR.BackupCtrl.backup ctrl p) job.paths
+        SBCLab.LXR.BackupCtrl.finalize ctrl
+        this.summarize ctrl
+
+        gogreen()
+        Console.WriteLine("done.")
+        gonormal()
+        Console.WriteLine("")
 
     member this.setN (x : string) =
         //Console.WriteLine("setting n = {0}", x)
@@ -98,14 +138,12 @@ type Backup () =
 
     member this.setRefDbKey db =
         refDbKey <- Some db
-        trySetRefDb ()
 
     member this.setRefDbFp db =
         refDbFp <- Some db
-        trySetRefDb ()
 
-    member this.finalize =
-        SBCLab.LXR.BackupCtrl.finalize <| ctrl ()
+//    member this.finalize =
+//        SBCLab.LXR.BackupCtrl.finalize <| ctrl ()
 
     member this.backupFile fp =
         if SBCLab.LXR.FileCtrl.fileExists fp then
@@ -121,10 +159,11 @@ type Backup () =
                 gocyan ()
                 Console.Write(fp)
                 gonormal ()
-                try SBCLab.LXR.BackupCtrl.backup (ctrl ()) fp
-                    gogreen(); Console.WriteLine(" done."); gonormal()
-                with
-                | _ -> gored(); Console.WriteLine(" failed."); gonormal()
+                paths <- fp :: paths
+//                try SBCLab.LXR.BackupCtrl.backup ctrl fp
+//                    gogreen(); Console.WriteLine(" done."); gonormal()
+//                with
+//                | _ -> gored(); Console.WriteLine(" failed."); gonormal()
         ()
 
     member this.backupDirectory fp =
@@ -145,15 +184,15 @@ type Backup () =
                 this.backupRecursive dp.FullName
         ()
 
-    member this.summarize =
-        let td = SBCLab.LXR.BackupCtrl.time_encrypt (ctrl ()) +
-                 SBCLab.LXR.BackupCtrl.time_extract (ctrl ()) +
-                 SBCLab.LXR.BackupCtrl.time_write (ctrl ())
-        let bi = SBCLab.LXR.BackupCtrl.bytes_in (ctrl ())
-        let bo = SBCLab.LXR.BackupCtrl.bytes_out (ctrl ())
+    member this.summarize ctrl =
+        let td = SBCLab.LXR.BackupCtrl.time_encrypt ctrl +
+                 SBCLab.LXR.BackupCtrl.time_extract ctrl +
+                 SBCLab.LXR.BackupCtrl.time_write ctrl
+        let bi = SBCLab.LXR.BackupCtrl.bytes_in ctrl
+        let bo = SBCLab.LXR.BackupCtrl.bytes_out ctrl
         Console.WriteLine("backup {0:0,0} bytes (read {1:0,0} bytes); took write={2} ms encrypt={3} ms extract={4} ms",
             bo, bi,
-            SBCLab.LXR.BackupCtrl.time_write (ctrl ()), SBCLab.LXR.BackupCtrl.time_encrypt (ctrl ()), SBCLab.LXR.BackupCtrl.time_extract (ctrl ()))
+            SBCLab.LXR.BackupCtrl.time_write ctrl, SBCLab.LXR.BackupCtrl.time_encrypt ctrl, SBCLab.LXR.BackupCtrl.time_extract ctrl)
         Console.Write("compression rate: ")
         gocyan ()
         Console.Write("{0:0.00}", (double(bi) / double(bo)))

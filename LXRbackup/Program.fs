@@ -46,6 +46,8 @@ module Main =
                                 Console.WriteLine(b)
                                 ()
         Console.WriteLine("Parameters: ")
+        showparam "  -j        " "backup job description in XML"
+        Console.WriteLine("")
         showparam "  -n        " "number of chunks (à 256 kB) per assembly"
         //showparam "  -r       " "redundant chunks per assembly (default = 0)"
         showparam "  -c        " "compression [0|1] (default = 0)"
@@ -59,6 +61,7 @@ module Main =
         Console.WriteLine("(*)marked parameters may occur several times.")
         Console.WriteLine("")
         showparam "--help      " "shows this help"
+        showparam "--version   " "displays version information"
         showparam "--license   " "displays license text"
         showparam "--copyright " "displays copyright information"
         gonormal()
@@ -76,6 +79,10 @@ module Main =
             showHelp ()
             exit(0)
 
+        if Array.contains "--version" argv then
+            Console.WriteLine(SBCLab.LXR.Liz.version)
+            exit(0)
+
         if Array.contains "--license" argv then
             Console.WriteLine(SBCLab.LXR.Liz.license)
             exit(0)
@@ -84,56 +91,67 @@ module Main =
             Console.WriteLine(SBCLab.LXR.Liz.copyright)
             exit(0)
 
-        let ps = List.collect (fun (name,req) -> [new Parameter(name,req)]) 
-                    [ ("-n",true); ("-r",false); ("-c",false); ("-d",false); ("-ref",false);
-                      ("-pD",true); ("-pX",true); ("-f",false); ("-d1",false); ("-dr",false) ]
-                 (*: Parameter list*)
-        List.map (fun (p : Parameter) -> p.parse argv) ps |> ignore
-        let nmissed = List.fold (fun c (p : Parameter) -> if p.isNecessary && not p.isInit then c + 1 else c) 0 ps
-        if nmissed > 0 then
-            showHelp ()
-            exit(1)
+        if Array.contains "-j" argv then
+            let p = new Parameter("-j",true)
+            p.parse argv
+            if not p.isInit then
+                showHelp ()
+                exit(0)
+            else
+                let fp = p.getValue |> List.head
+                let jdesc = new SBCLab.LXR.DbBackupJob ()
+                use fstr = File.OpenRead(fp)
+                use instr = new StreamReader(fstr)
+                jdesc.inStream instr
+                let backup = new Backup()
+                jdesc.idb.appValues backup.runJob //name job
 
-        (* prepare *)
-        let backup = new Backup()
-        List.iter 
-            (fun (n, f) ->
-                match List.tryFind (fun (p : Parameter) -> p.getName = n) ps with
-                | Some p -> if p.isInit then f (p.getValue |> List.head)
-                | _ -> () )
-            [("-n",backup.setN);("-r",backup.setR);("-c",backup.setC);("-d",backup.setD);("-pD",backup.setDataPath);("-pX",backup.setChunkPath)]
+        else
+            let ps = List.collect (fun (name,req) -> [new Parameter(name,req)]) 
+                        [ ("-n",true); ("-r",false); ("-c",false); ("-d",false); ("-ref",false);
+                          ("-pD",true); ("-pX",true); ("-f",false); ("-d1",false); ("-dr",false) ]
+                     (*: Parameter list*)
+            List.map (fun (p : Parameter) -> p.parse argv) ps |> ignore
+            let nmissed = List.fold (fun c (p : Parameter) -> if p.isNecessary && not p.isInit then c + 1 else c) 0 ps
+            if nmissed > 0 then
+                showHelp ()
+                exit(1)
 
-        let mutable refdbfp : SBCLab.LXR.DbFp option = None
-        let mutable refdbkey : SBCLab.LXR.DbKey option = None
+            let backup = new Backup()
 
-        match List.tryFind (fun (p : Parameter) -> p.getName = "-ref" && p.isInit) ps with
-        | Some p -> try let db = new SBCLab.LXR.DbFp() in
-                        //System.Console.WriteLine("reading paths as reference from {0}", p.getValue.Head)
-                        use str = File.OpenText(p.getValue.Head)
-                        db.inStream str
-                        backup.setRefDbFp db
-                    with _ -> ()
-        | _ -> ()
+            List.iter 
+                (fun (n, f) ->
+                    match List.tryFind (fun (p : Parameter) -> p.getName = n) ps with
+                    | Some p -> if p.isInit then f (p.getValue.Head)
+                    | _ -> () )
+                [("-n",backup.setN);("-r",backup.setR);("-c",backup.setC);("-d",backup.setD);("-pD",backup.setDataPath);("-pX",backup.setChunkPath)]
 
-        (* run parameters *)
-        match List.tryFind (fun (p : Parameter) -> p.getName = "-f") ps with
-        | Some p -> List.iter (fun fp -> backup.backupFile fp) p.getValue
-        | _ -> ()
+            let mutable refdbfp : SBCLab.LXR.DbFp option = None
+            let mutable refdbkey : SBCLab.LXR.DbKey option = None
 
-        match List.tryFind (fun (p : Parameter) -> p.getName = "-d1") ps with
-        | Some p -> List.iter (fun fp -> backup.backupDirectory fp) p.getValue
-        | _ -> ()
+            match List.tryFind (fun (p : Parameter) -> p.getName = "-ref" && p.isInit) ps with
+            | Some p -> try let db = new SBCLab.LXR.DbFp() in
+                            //System.Console.WriteLine("reading paths as reference from {0}", p.getValue.Head)
+                            use str = File.OpenText(p.getValue.Head)
+                            db.inStream str
+                            backup.setRefDbFp db
+                        with _ -> ()
+            | _ -> ()
 
-        match List.tryFind (fun (p : Parameter) -> p.getName = "-dr") ps with
-        | Some p -> List.iter (fun fp -> backup.backupRecursive fp) p.getValue
-        | _ -> ()
+            (* run parameters *)
+            match List.tryFind (fun (p : Parameter) -> p.getName = "-f") ps with
+            | Some p -> List.iter (fun fp -> backup.backupFile fp) p.getValue
+            | _ -> ()
 
-        // finalize the current assembly
-        // and write data files to disk
-        backup.finalize
+            match List.tryFind (fun (p : Parameter) -> p.getName = "-d1") ps with
+            | Some p -> List.iter (fun fp -> backup.backupDirectory fp) p.getValue
+            | _ -> ()
 
-        // report statistics
-        backup.summarize
+            match List.tryFind (fun (p : Parameter) -> p.getName = "-dr") ps with
+            | Some p -> List.iter (fun fp -> backup.backupRecursive fp) p.getValue
+            | _ -> ()
+
+            let job = backup.mkJob
+            backup.runJob "backup" job
 
         0 // return an integer exit code
-
