@@ -72,7 +72,7 @@ type Backup () =
             regexexcl = [];
             paths = paths }
         job
-
+      
     member this.runJob (name : string) (job : SBCLab.LXR.DbJobDat) =
         if not (SBCLab.LXR.FileCtrl.dirExists job.options.fpath_chunks) then
             Directory.CreateDirectory(job.options.fpath_chunks) |> ignore
@@ -86,8 +86,10 @@ type Backup () =
         Console.WriteLine(name)
         gonormal()
 
+        SBCLab.LXR.Logging.enable_console ()
         Seq.iter (fun p -> SBCLab.LXR.BackupCtrl.backup ctrl p) job.paths
         SBCLab.LXR.BackupCtrl.finalize ctrl
+        SBCLab.LXR.Logging.disable_console ()
         this.summarize ctrl
 
         gogreen()
@@ -151,14 +153,14 @@ type Backup () =
             let fi = FileInfo(fp)
             if fi.Attributes.HasFlag(FileAttributes.ReparsePoint)
                || fi.Attributes.HasFlag(FileAttributes.System) then
-                gored ()
-                Console.WriteLine("skipping: {0}", fp)
-                gonormal ()
+                //gored ()
+                SBCLab.LXR.Logging.log () <| Printf.sprintf "skipping: %A" fp
+                //gonormal ()
             else
-                Console.Write("backing up ")
-                gocyan ()
-                Console.Write(fp)
-                gonormal ()
+                //Console.Write("backing up ")
+                //gocyan ()
+                //Console.Write(fp)
+                //gonormal ()
                 paths <- fp :: paths
 //                try SBCLab.LXR.BackupCtrl.backup ctrl fp
 //                    gogreen(); Console.WriteLine(" done."); gonormal()

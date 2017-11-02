@@ -100,12 +100,29 @@ module Main =
             else
                 let fp = p.getValue |> List.head
                 let jdesc = new SBCLab.LXR.DbBackupJob ()
-                use fstr = File.OpenRead(fp)
-                use instr = new StreamReader(fstr)
-                jdesc.inStream instr
+                (
+                    use fstr = File.OpenRead(fp)
+                    use instr = new StreamReader(fstr)
+                    jdesc.inStream instr
+                )
                 let backup = new Backup()
-                jdesc.idb.appValues backup.runJob //name job
+                //backup.runJob //name job
+                jdesc.idb.appValues (fun name (job: SBCLab.LXR.DbJobDat) ->
+                    if job.options.isDeduplicated > 0 then
+                        let fpath = new DirectoryInfo(job.options.fpath_db) in
+                        SBCLab.LXR.Logging.log () <| Printf.sprintf "reading dir %A" fpath 
+                        let newest = fpath.EnumerateFiles("lxr*_dbfp.xml", SearchOption.TopDirectoryOnly)
+                        let selected = newest |> Seq.map (fun fi -> (fi.LastWriteTime.Ticks, fi.FullName))
+                                       |> Seq.sortByDescending (fun (dt, _) -> dt) |> Seq.take 1 |> Seq.toList
+                        match selected with
+                        | [(_, el)] -> let db = new SBCLab.LXR.DbFp() in
+                                       use str = File.OpenText(el)
+                                       db.inStream str
+                                       backup.setRefDbFp db
 
+                        | _ -> ()
+                    backup.runJob name job
+                    )
         else
             let ps = List.collect (fun (name,req) -> [new Parameter(name,req)]) 
                         [ ("-n",true); ("-r",false); ("-c",false); ("-d",false); ("-ref",false);
